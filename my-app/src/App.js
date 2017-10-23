@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import './App.css';
 
 class App extends Component {
@@ -9,7 +10,8 @@ class App extends Component {
       ,selectedItems: []
       ,list: []
       ,modal: false
-      ,entries: [
+      ,entries: []
+      /*,entries: [
       {
         "id": 1,
         "name": "Leanne Graham",
@@ -240,11 +242,23 @@ class App extends Component {
           "bs": "target end-to-end models"
         }
       }
-    ]
+    ]*/
     };
     this.handleClickCheck = this.handleClickCheck.bind(this);
     this.handleComfirm = this.handleComfirm.bind(this);
     this.closeModal = this.closeModal.bind(this);
+  }
+  
+  componentDidMount() {
+    axios.get(`https://jsonplaceholder.typicode.com/users`)
+      .then(res => {
+        const posts = [];
+        res.data.map(obj => posts.push(obj));
+        this.setState({ 
+          entries: posts 
+          
+        });
+      });
   }
   
   handleComfirm (e) {
@@ -275,7 +289,7 @@ class App extends Component {
   }
   
   handleClickCheck (e) {
-    let check = e.target.checked, c = this.state.counting, el = parseInt(e.target.id), i = this.state.selectedItems;
+    let check = e.target.checked, c = this.state.counting, el = parseInt(e.target.id, 10), i = this.state.selectedItems;
     
     c = check ? c+1 : c-1;
     
